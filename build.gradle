@@ -1,0 +1,32 @@
+plugins
+{
+    id 'java'
+    id 'application'
+    id 'org.openjfx.javafxplugin' version '0.1.0'
+}
+
+group = 'com.example'
+version = '1.0-SNAPSHOT'
+
+java
+{
+    sourceCompatibility = JavaVersion.VERSION_17
+    targetCompatibility = JavaVersion.VERSION_17
+}
+
+repositories
+{
+    mavenCentral()
+}
+
+javafx
+{
+    version = '21'
+    modules = ['javafx.controls']
+}
+
+application
+{
+    mainClass = 'agendoc.AgendocApp'
+    mainModule = 'agendoc'
+}
