@@ -3,6 +3,7 @@ plugins
     id 'java'
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.1.0'
+    id 'com.gluonhq.gluonfx-gradle-plugin' version '1.0.27'
 }
 
 group = 'com.example'
@@ -29,4 +30,12 @@ application
 {
     mainClass = 'agendoc.AgendocApp'
     mainModule = 'agendoc'
+}
+
+gluonfx {
+    target = 'host'
+
+    reflectionList = [
+        'agendoc.AgendocMain',
+    ]
 }
