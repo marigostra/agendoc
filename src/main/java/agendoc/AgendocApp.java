@@ -24,8 +24,8 @@ public class AgendocApp extends Application
         Button llmButton = new Button("LLM");
         llmButton.setOnAction(e ->
         {
-            Settings settings = new Settings(primaryStage);
-            settings.showAndWait();
+            SettingsForm settingsForm = new SettingsForm(primaryStage);
+            settingsForm.showAndWait();
         });
 
         TextArea textArea = new TextArea();

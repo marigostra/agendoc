@@ -1,102 +1,170 @@
 package agendoc;
 
-import javafx.geometry.Insets;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
-import javafx.scene.control.TextField;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.HBox;
-import javafx.scene.layout.VBox;
-import javafx.stage.Modality;
-import javafx.stage.Stage;
-
 /**
- * Settings dialog for configuring OpenAI API access parameters.
+ * Data model for OpenAI API access settings.
  */
-public class Settings extends Stage
+public class Settings
 {
 
-    private TextField endpointField;
-    private PasswordField tokenField;
-    private TextField modelField;
-    private TextField projectField;
-    private TextField timeoutField;
-    private TextField toolCallLimitField;
-    private TextField temperatureField;
+    private String endpoint;
+    private String token;
+    private String model;
+    private String project;
+    private int timeout;
+    private int toolCallLimit;
+    private double temperature;
 
     /**
-     * Constructs a modal Settings dialog owned by the given stage.
-     *
-     * @param owner the parent stage
+     * Creates settings with default values.
      */
-    public Settings(Stage owner)
+    public Settings()
     {
-        initOwner(owner);
-        initModality(Modality.WINDOW_MODAL);
-        setTitle("Settings");
+        this.endpoint = "https://api.openai.com/v1";
+        this.token = "";
+        this.model = "gpt-4";
+        this.project = "";
+        this.timeout = 30000;
+        this.toolCallLimit = 10;
+        this.temperature = 0.7;
+    }
 
-        GridPane grid = new GridPane();
-        grid.setHgap(10);
-        grid.setVgap(10);
-        grid.setPadding(new Insets(15));
+    /**
+     * Returns the API endpoint URL.
+     *
+     * @return endpoint URL
+     */
+    public String getEndpoint()
+    {
+        return endpoint;
+    }
 
-        Label endpointLabel = new Label("Endpoint API:");
-        endpointField = new TextField();
-        endpointField.setPromptText("https://api.openai.com/v1");
-        grid.add(endpointLabel, 0, 0);
-        grid.add(endpointField, 1, 0);
+    /**
+     * Sets the API endpoint URL.
+     *
+     * @param endpoint endpoint URL
+     */
+    public void setEndpoint(String endpoint)
+    {
+        this.endpoint = endpoint;
+    }
 
-        Label tokenLabel = new Label("Access Token:");
-        tokenField = new PasswordField();
-        tokenField.setPromptText("sk-...");
-        grid.add(tokenLabel, 0, 1);
-        grid.add(tokenField, 1, 1);
+    /**
+     * Returns the access token.
+     *
+     * @return access token
+     */
+    public String getToken()
+    {
+        return token;
+    }
 
-        Label modelLabel = new Label("Model Name:");
-        modelField = new TextField();
-        modelField.setPromptText("gpt-4");
-        grid.add(modelLabel, 0, 2);
-        grid.add(modelField, 1, 2);
+    /**
+     * Sets the access token.
+     *
+     * @param token access token
+     */
+    public void setToken(String token)
+    {
+        this.token = token;
+    }
 
-        Label projectLabel = new Label("Project:");
-        projectField = new TextField();
-        projectField.setPromptText("my-project");
-        grid.add(projectLabel, 0, 3);
-        grid.add(projectField, 1, 3);
+    /**
+     * Returns the model name.
+     *
+     * @return model name
+     */
+    public String getModel()
+    {
+        return model;
+    }
 
-        Label timeoutLabel = new Label("Timeout (ms):");
-        timeoutField = new TextField();
-        timeoutField.setPromptText("30000");
-        grid.add(timeoutLabel, 0, 4);
-        grid.add(timeoutField, 1, 4);
+    /**
+     * Sets the model name.
+     *
+     * @param model model name
+     */
+    public void setModel(String model)
+    {
+        this.model = model;
+    }
 
-        Label toolCallLimitLabel = new Label("Tool Call Limit:");
-        toolCallLimitField = new TextField();
-        toolCallLimitField.setPromptText("10");
-        grid.add(toolCallLimitLabel, 0, 5);
-        grid.add(toolCallLimitField, 1, 5);
+    /**
+     * Returns the project name.
+     *
+     * @return project name
+     */
+    public String getProject()
+    {
+        return project;
+    }
 
-        Label temperatureLabel = new Label("Temperature:");
-        temperatureField = new TextField();
-        temperatureField.setPromptText("0.7");
-        grid.add(temperatureLabel, 0, 6);
-        grid.add(temperatureField, 1, 6);
+    /**
+     * Sets the project name.
+     *
+     * @param project project name
+     */
+    public void setProject(String project)
+    {
+        this.project = project;
+    }
 
-        Button saveButton = new Button("Save");
-        saveButton.setOnAction(e -> close());
+    /**
+     * Returns the timeout in milliseconds.
+     *
+     * @return timeout in milliseconds
+     */
+    public int getTimeout()
+    {
+        return timeout;
+    }
 
-        Button cancelButton = new Button("Cancel");
-        cancelButton.setOnAction(e -> close());
+    /**
+     * Sets the timeout in milliseconds.
+     *
+     * @param timeout timeout in milliseconds
+     */
+    public void setTimeout(int timeout)
+    {
+        this.timeout = timeout;
+    }
 
-        HBox buttonBox = new HBox(10, saveButton, cancelButton);
-        buttonBox.setPadding(new Insets(10, 0, 0, 0));
+    /**
+     * Returns the tool call limit.
+     *
+     * @return tool call limit
+     */
+    public int getToolCallLimit()
+    {
+        return toolCallLimit;
+    }
 
-        VBox root = new VBox(10, grid, buttonBox);
-        root.setPadding(new Insets(10));
+    /**
+     * Sets the tool call limit.
+     *
+     * @param toolCallLimit tool call limit
+     */
+    public void setToolCallLimit(int toolCallLimit)
+    {
+        this.toolCallLimit = toolCallLimit;
+    }
 
-        Scene scene = new Scene(root, 450, 350);
-        setScene(scene);
+    /**
+     * Returns the temperature value.
+     *
+     * @return temperature
+     */
+    public double getTemperature()
+    {
+        return temperature;
+    }
+
+    /**
+     * Sets the temperature value.
+     *
+     * @param temperature temperature
+     */
+    public void setTemperature(double temperature)
+    {
+        this.temperature = temperature;
     }
 }
