@@ -3,6 +3,7 @@ package agendoc;
 import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
@@ -20,6 +21,13 @@ public class AgendocApp extends Application
     {
         primaryStage.setTitle("Agendoc");
 
+        Button llmButton = new Button("LLM");
+        llmButton.setOnAction(e ->
+        {
+            Settings settings = new Settings(primaryStage);
+            settings.showAndWait();
+        });
+
         TextArea textArea = new TextArea();
         textArea.setPromptText("Enter multi-line text here...");
         textArea.setPrefRowCount(10);
@@ -30,7 +38,7 @@ public class AgendocApp extends Application
         ListView<String> listView = new ListView<>();
         listView.getItems().addAll("Item 1", "Item 2", "Item 3");
 
-        VBox vbox = new VBox(10, textArea, textField, listView);
+        VBox vbox = new VBox(10, llmButton, textArea, textField, listView);
         vbox.setPadding(new Insets(10));
 
         Scene scene = new Scene(vbox, 600, 400);
