@@ -4,20 +4,31 @@ import javafx.application.Application;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.ColumnConstraints;
 import javafx.scene.layout.GridPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+
+import java.io.File;
 
 /**
  * Main entry point for the Agendoc JavaFX application.
  */
 public class AgendocApp extends Application
 {
+
+    private ListView<DocumentRef> listView;
+    private Button deleteButton;
+    private MenuItem deleteMenuItem;
 
     @Override
     public void start(Stage primaryStage)
@@ -31,6 +42,15 @@ public class AgendocApp extends Application
             settingsForm.showAndWait();
         });
 
+        Button addButton = new Button("Добавить");
+        addButton.setOnAction(e -> addDocument(primaryStage));
+
+        deleteButton = new Button("Удалить");
+        deleteButton.setDisable(true);
+        deleteButton.setOnAction(e -> deleteSelectedDocument());
+
+        HBox buttonBox = new HBox(10, llmButton, addButton, deleteButton);
+
         TextArea textArea = new TextArea();
         textArea.setPromptText("Enter multi-line text here...");
         textArea.setPrefRowCount(10);
@@ -38,10 +58,43 @@ public class AgendocApp extends Application
         TextField textField = new TextField();
         textField.setPromptText("Enter text here...");
 
-        ListView<String> listView = new ListView<>();
-        listView.getItems().addAll("Item 1", "Item 2", "Item 3");
+        listView = new ListView<>();
+        listView.setCellFactory(lv -> new ListCell<>()
+        {
+            @Override
+            protected void updateItem(DocumentRef item, boolean empty)
+            {
+                super.updateItem(item, empty);
+                if (empty || item == null)
+                {
+                    setText(null);
+                }
+                else
+                {
+                    setText(item.toString());
+                }
+            }
+        });
 
-        VBox mainBox = new VBox(10, llmButton, textArea, textField);
+        listView.getSelectionModel().selectedItemProperty().addListener(
+            (obs, oldVal, newVal) ->
+            {
+                boolean hasSelection = newVal != null;
+                deleteButton.setDisable(!hasSelection);
+                deleteMenuItem.setDisable(!hasSelection);
+            });
+
+        MenuItem addMenuItem = new MenuItem("Добавить");
+        addMenuItem.setOnAction(e -> addDocument(primaryStage));
+
+        deleteMenuItem = new MenuItem("Удалить");
+        deleteMenuItem.setDisable(true);
+        deleteMenuItem.setOnAction(e -> deleteSelectedDocument());
+
+        ContextMenu contextMenu = new ContextMenu(addMenuItem, deleteMenuItem);
+        listView.setContextMenu(contextMenu);
+
+        VBox mainBox = new VBox(10, buttonBox, textArea, textField);
         VBox.setVgrow(textArea, Priority.ALWAYS);
 
         GridPane grid = new GridPane();
@@ -67,6 +120,40 @@ public class AgendocApp extends Application
         Scene scene = new Scene(grid, 600, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    /**
+     * Opens a file chooser dialog and adds the selected file to the document list.
+     *
+     * @param owner the parent stage for the file chooser dialog
+     */
+    private void addDocument(Stage owner)
+    {
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Выберите документ");
+        fileChooser.getExtensionFilters().addAll(
+            new FileChooser.ExtensionFilter("Документы Microsoft Office",
+                "*.docx", "*.xlsx", "*.doc", "*.xls"),
+            new FileChooser.ExtensionFilter("Все файлы", "*.*")
+        );
+        File selectedFile = fileChooser.showOpenDialog(owner);
+        if (selectedFile != null)
+        {
+            DocumentRef docRef = new DocumentRef(selectedFile.toPath().toAbsolutePath());
+            listView.getItems().add(docRef);
+        }
+    }
+
+    /**
+     * Removes the currently selected document from the list.
+     */
+    private void deleteSelectedDocument()
+    {
+        int selectedIndex = listView.getSelectionModel().getSelectedIndex();
+        if (selectedIndex >= 0)
+        {
+            listView.getItems().remove(selectedIndex);
+        }
     }
 
     /**
