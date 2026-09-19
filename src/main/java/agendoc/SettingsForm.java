@@ -41,63 +41,63 @@ public class SettingsForm extends Stage
 
         initOwner(owner);
         initModality(Modality.WINDOW_MODAL);
-        setTitle("Settings");
+        setTitle("Настройки");
 
         GridPane grid = new GridPane();
         grid.setHgap(10);
         grid.setVgap(10);
         grid.setPadding(new Insets(15));
 
-        Label endpointLabel = new Label("Endpoint API:");
+        Label endpointLabel = new Label("Адрес для подключения:");
         endpointField = new TextField();
         endpointField.setPromptText("https://api.openai.com/v1");
         grid.add(endpointLabel, 0, 0);
         grid.add(endpointField, 1, 0);
 
-        Label tokenLabel = new Label("Access Token:");
+        Label tokenLabel = new Label("Токен доступа:");
         tokenField = new PasswordField();
         tokenField.setPromptText("sk-...");
         grid.add(tokenLabel, 0, 1);
         grid.add(tokenField, 1, 1);
 
-        Label modelLabel = new Label("Model Name:");
+        Label modelLabel = new Label("Название модели:");
         modelField = new TextField();
         modelField.setPromptText("gpt-4");
         grid.add(modelLabel, 0, 2);
         grid.add(modelField, 1, 2);
 
-        Label projectLabel = new Label("Project:");
+        Label projectLabel = new Label("Проект:");
         projectField = new TextField();
         projectField.setPromptText("my-project");
         grid.add(projectLabel, 0, 3);
         grid.add(projectField, 1, 3);
 
-        Label timeoutLabel = new Label("Timeout (ms):");
+        Label timeoutLabel = new Label("Таймаут (мс):");
         timeoutField = new TextField();
         timeoutField.setPromptText("30000");
         grid.add(timeoutLabel, 0, 4);
         grid.add(timeoutField, 1, 4);
 
-        Label toolCallLimitLabel = new Label("Tool Call Limit:");
+        Label toolCallLimitLabel = new Label("Лимит вызовов инструментов:");
         toolCallLimitField = new TextField();
         toolCallLimitField.setPromptText("10");
         grid.add(toolCallLimitLabel, 0, 5);
         grid.add(toolCallLimitField, 1, 5);
 
-        Label temperatureLabel = new Label("Temperature:");
+        Label temperatureLabel = new Label("Температура:");
         temperatureField = new TextField();
         temperatureField.setPromptText("0.7");
         grid.add(temperatureLabel, 0, 6);
         grid.add(temperatureField, 1, 6);
 
-        Button saveButton = new Button("Save");
+        Button saveButton = new Button("Сохранить");
         saveButton.setOnAction(e ->
         {
             saveSettings();
             close();
         });
 
-        Button cancelButton = new Button("Cancel");
+        Button cancelButton = new Button("Отмена");
         cancelButton.setOnAction(e -> close());
 
         HBox buttonBox = new HBox(10, saveButton, cancelButton);
