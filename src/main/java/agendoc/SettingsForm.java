@@ -23,7 +23,7 @@ public class SettingsForm extends Stage
     private final SettingsStorage storage;
 
     private TextField endpointField;
-    private PasswordField tokenField;
+    private TextField tokenField;
     private TextField modelField;
     private TextField projectField;
     private TextField timeoutField;
@@ -55,7 +55,7 @@ public class SettingsForm extends Stage
         grid.add(endpointField, 1, 0);
 
         Label tokenLabel = new Label("Токен доступа:");
-        tokenField = new PasswordField();
+        tokenField = new TextField();
         tokenField.setPromptText("sk-...");
         grid.add(tokenLabel, 0, 1);
         grid.add(tokenField, 1, 1);

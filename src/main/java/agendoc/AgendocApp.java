@@ -42,10 +42,10 @@ public class AgendocApp extends Application
             settingsForm.showAndWait();
         });
 
-        Button addButton = new Button("Добавить");
+        Button addButton = new Button("Добавить документ");
         addButton.setOnAction(e -> addDocument(primaryStage));
 
-        deleteButton = new Button("Удалить");
+        deleteButton = new Button("Удалить документ");
         deleteButton.setDisable(true);
         deleteButton.setOnAction(e -> deleteSelectedDocument());
 
@@ -84,10 +84,10 @@ public class AgendocApp extends Application
                 deleteMenuItem.setDisable(!hasSelection);
             });
 
-        MenuItem addMenuItem = new MenuItem("Добавить");
+        MenuItem addMenuItem = new MenuItem("Добавить документ");
         addMenuItem.setOnAction(e -> addDocument(primaryStage));
 
-        deleteMenuItem = new MenuItem("Удалить");
+        deleteMenuItem = new MenuItem("Удалить документ");
         deleteMenuItem.setDisable(true);
         deleteMenuItem.setOnAction(e -> deleteSelectedDocument());
 
