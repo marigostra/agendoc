@@ -55,17 +55,11 @@ public class SettingsStorage
     public Settings load()
     {
         if (!Files.exists(settingsFilePath))
-        {
             return new Settings();
-        }
-
-        try (Reader reader = Files.newBufferedReader(settingsFilePath))
-        {
+        try (Reader reader = Files.newBufferedReader(settingsFilePath)) {
             Settings settings = gson.fromJson(reader, Settings.class);
             if (settings == null)
-            {
-                return new Settings();
-            }
+		                return new Settings();
             return settings;
         }
         catch (Exception e)
@@ -85,12 +79,10 @@ public class SettingsStorage
     {
         Path configDir = settingsFilePath.getParent();
         if (!Files.exists(configDir))
-        {
             Files.createDirectories(configDir);
-        }
-        try (Writer writer = Files.newBufferedWriter(settingsFilePath))
-        {
+        try (Writer writer = Files.newBufferedWriter(settingsFilePath)) {
             gson.toJson(settings, writer);
+	    writer.flush();
         }
         if (!System.getProperty("os.name").toLowerCase().contains("win"))
         {
