@@ -25,17 +25,30 @@ public class SettingsStorage
     private final Path settingsFilePath;
 
     /**
-     * Creates a SettingsStorage and determines the configuration file path.
+     * Creates a SettingsStorage and determines the configuration file path
+     * using the platform-specific config directory.
      */
     public SettingsStorage()
     {
+        this(resolveConfigDir());
+    }
+
+    /**
+     * Creates a SettingsStorage using the given directory as the config directory.
+     * Intended for testing purposes.
+     *
+     * @param configDir the directory where the settings file will be stored
+     */
+    SettingsStorage(Path configDir)
+    {
         this.gson = new GsonBuilder().setPrettyPrinting().create();
-        this.settingsFilePath = resolveConfigDir().resolve(SETTINGS_FILE_NAME);
+        this.settingsFilePath = configDir.resolve(SETTINGS_FILE_NAME);
     }
 
     /**
      * Loads settings from the JSON configuration file.
-     * Returns default settings if the file does not exist.
+     * Returns default settings if the file does not exist, is empty,
+     * or contains invalid JSON.
      *
      * @return the loaded or default settings
      */
@@ -55,7 +68,7 @@ public class SettingsStorage
             }
             return settings;
         }
-        catch (IOException e)
+        catch (Exception e)
         {
             return new Settings();
         }
@@ -75,16 +88,21 @@ public class SettingsStorage
         {
             Files.createDirectories(configDir);
         }
-
         try (Writer writer = Files.newBufferedWriter(settingsFilePath))
         {
             gson.toJson(settings, writer);
         }
-
         if (!System.getProperty("os.name").toLowerCase().contains("win"))
         {
-            Files.setPosixFilePermissions(settingsFilePath,
-                PosixFilePermissions.fromString("rw-------"));
+            try
+            {
+                Files.setPosixFilePermissions(settingsFilePath,
+                    PosixFilePermissions.fromString("rw-------"));
+            }
+            catch (UnsupportedOperationException | IOException e)
+            {
+                // Permissions are best-effort; ignore if not supported by the file system
+            }
         }
     }
 
@@ -94,11 +112,10 @@ public class SettingsStorage
      *
      * @return path to the agendoc configuration directory
      */
-    private Path resolveConfigDir()
+    private static Path resolveConfigDir()
     {
         String os = System.getProperty("os.name").toLowerCase();
         String configBase;
-
         if (os.contains("win"))
         {
             configBase = System.getenv("APPDATA");
@@ -115,7 +132,6 @@ public class SettingsStorage
                 configBase = System.getProperty("user.home") + "/.config";
             }
         }
-
         return Paths.get(configBase, CONFIG_DIR_NAME);
     }
 }
