@@ -10,6 +10,30 @@ Agendoc is an intelligent agent application for working with a suite of office d
 - **UI Framework:** JavaFX 21
 - **Build System:** Gradle
 - **Module System:** Java Platform Module System (JPMS)
+- **Distribution Format:** Native image (GraalVM native-image)
+
+## Distribution: Native Image
+
+The application is distributed as a **GraalVM native-image**. This means the application is compiled ahead-of-time into a standalone native executable. Native image provides faster startup time and lower runtime memory overhead compared to running on the JVM.
+
+### Reflection and Proxy Constraints
+
+Because native-image performs closed-world static analysis at build time, it cannot automatically discover classes accessed via reflection, dynamic proxies, or other runtime introspection mechanisms. All such usages must be explicitly declared so that the native-image builder can include the necessary metadata.
+
+Developers must adhere to the following rules:
+
+- **Reflection:** Any class, method, field, or constructor accessed via `java.lang.reflect` must be explicitly registered. This is typically done via reflection configuration files (e.g., `reflect-config.json`) or annotations/hints recognized by the native-image agent and build process.
+- **Dynamic Proxies:** Any use of `java.lang.reflect.Proxy` to create dynamic proxy instances requires explicit declaration of the proxied interfaces. Proxy configuration must be provided (e.g., `proxy-config.json`) so that the native-image builder generates the required proxy classes at build time.
+- **Resource Bundles and Resources:** Any resources loaded via `Class.getResource()`, `ClassLoader.getResource()`, or resource bundles must be listed in the resource configuration (e.g., `resource-config.json`).
+- **Serialization:** Classes used with Java serialization must be registered for reflective serialization support.
+- **JNI:** Any native methods accessed via JNI must be declared in JNI configuration.
+
+### Recommended Practice
+
+- Run the application with the native-image tracing agent during development and testing to automatically capture reflection, proxy, resource, serialization, and JNI usage. The agent outputs configuration files that can be fed into the native-image build.
+- Keep reflection usage to a minimum. Prefer direct instantiation and method calls whenever possible.
+- When introducing a new library or framework, verify its native-image compatibility and include any required reachability metadata.
+- The project should maintain up-to-date native-image configuration files (e.g., in `src/main/resources/META-INF/native-image/`) as part of the source tree.
 
 ## Project Structure
 
@@ -54,6 +78,12 @@ agendoc/
 - Use the Java module system properly; declare all required modules in `module-info.java`.
 - Prefer composition over inheritance.
 - Write clean, maintainable code with single-responsibility classes.
+
+### Native Image Readiness
+
+- Every code change must consider native-image compatibility. Avoid introducing unregistered reflection, dynamic proxies, or resource loading without corresponding configuration entries.
+- When reflection or proxies are unavoidable, document the usage and ensure the corresponding native-image configuration files are updated.
+- The project must remain buildable as a native image at all times.
 
 ### Communication
 
