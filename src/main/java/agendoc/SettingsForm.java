@@ -2,6 +2,7 @@ package agendoc;
 
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
@@ -91,8 +92,7 @@ public class SettingsForm extends Stage
         grid.add(temperatureField, 1, 6);
 
         Button saveButton = new Button("Сохранить");
-        saveButton.setOnAction(e ->
-        {
+        saveButton.setOnAction(e -> {
             saveSettings();
             close();
         });
@@ -171,7 +171,11 @@ public class SettingsForm extends Stage
         }
         catch (IOException e)
         {
-            System.err.println("Failed to save settings: " + e.getMessage());
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Ошибка сохранения");
+            alert.setHeaderText("Не удалось сохранить настройки");
+            alert.setContentText(e.getMessage());
+            alert.showAndWait();
         }
     }
 }
