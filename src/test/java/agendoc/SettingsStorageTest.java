@@ -70,7 +70,7 @@ class SettingsStorageTest
     @Test
     void loadShouldReturnDefaultSettingsWhenFileIsEmpty() throws IOException
     {
-        Path settingsFile = tempDir.resolve("settings.json");
+        Path settingsFile = tempDir.resolve("settings.properties");
         Files.createFile(settingsFile);
 
         Settings settings = storage.load();
@@ -80,10 +80,10 @@ class SettingsStorageTest
     }
 
     @Test
-    void loadShouldReturnDefaultSettingsWhenJsonIsInvalid() throws IOException
+    void loadShouldReturnDefaultSettingsWhenFileHasGarbage() throws IOException
     {
-        Path settingsFile = tempDir.resolve("settings.json");
-        Files.writeString(settingsFile, "this is not valid json {{{");
+        Path settingsFile = tempDir.resolve("settings.properties");
+        Files.writeString(settingsFile, "this is not a valid properties file {{{");
 
         Settings settings = storage.load();
 
@@ -92,30 +92,34 @@ class SettingsStorageTest
     }
 
     @Test
-    void loadShouldReturnDefaultSettingsWhenJsonIsMalformed() throws IOException
+    void loadShouldReturnDefaultSettingsWhenNumbersAreUnparseable() throws IOException
     {
-        Path settingsFile = tempDir.resolve("settings.json");
-        Files.writeString(settingsFile, "{\"endpoint\": \"https://test.com\", \"timeout\": \"not_a_number\"}");
+        Path settingsFile = tempDir.resolve("settings.properties");
+        Files.writeString(settingsFile, "endpoint=https://test.com\ntimeout=not_a_number\n");
 
         Settings settings = storage.load();
 
         assertNotNull(settings);
-        assertEquals("https://api.openai.com/v1", settings.getEndpoint());
+        assertEquals("https://test.com", settings.getEndpoint());
+        assertEquals(30000, settings.getTimeout());
     }
 
     @Test
     void saveShouldCreateParentDirectories() throws IOException
     {
+        Path nestedDir = tempDir.resolve("nested").resolve("config");
+        SettingsStorage nestedStorage = new SettingsStorage(nestedDir);
+
         Settings settings = new Settings();
         settings.setEndpoint("https://nested.dir.test.com");
 
-        storage.save(settings);
+        nestedStorage.save(settings);
 
-        Path settingsFile = tempDir.resolve("settings.json");
+        Path settingsFile = nestedDir.resolve("settings.properties");
         assertTrue(Files.exists(settingsFile));
 
-        String content = Files.readString(settingsFile);
-        assertTrue(content.contains("https://nested.dir.test.com"));
+        Settings loaded = nestedStorage.load();
+        assertEquals("https://nested.dir.test.com", loaded.getEndpoint());
     }
 
     @Test
@@ -134,17 +138,17 @@ class SettingsStorageTest
     }
 
     @Test
-    void loadShouldHandlePartialJsonGracefully() throws IOException
+    void loadShouldHandlePartialPropertiesGracefully() throws IOException
     {
-        Path settingsFile = tempDir.resolve("settings.json");
-        Files.writeString(settingsFile, "{\"endpoint\": \"https://partial.com\", \"model\": \"custom-model\"}");
+        Path settingsFile = tempDir.resolve("settings.properties");
+        Files.writeString(settingsFile, "endpoint=https://partial.com\nmodel=custom-model\n");
 
         Settings settings = storage.load();
 
         assertNotNull(settings);
         assertEquals("https://partial.com", settings.getEndpoint());
         assertEquals("custom-model", settings.getModel());
-        // Fields not present in JSON should retain default values
+        // Fields not present in properties should retain default values
         assertEquals(30000, settings.getTimeout());
         assertEquals(0.7, settings.getTemperature(), 0.001);
     }
