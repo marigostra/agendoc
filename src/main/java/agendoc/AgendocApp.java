@@ -1,6 +1,7 @@
 package agendoc;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.geometry.Insets;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
@@ -30,16 +31,22 @@ public class AgendocApp extends Application
     private Button deleteButton;
     private MenuItem deleteMenuItem;
 
+    private SettingsStorage settingsStorage;
+    private Agent agent;
+
     @Override
     public void start(Stage primaryStage)
     {
         primaryStage.setTitle("Agendoc");
+
+        settingsStorage = new SettingsStorage();
 
         Button llmButton = new Button("LLM");
         llmButton.setOnAction(e ->
         {
             SettingsForm settingsForm = new SettingsForm(primaryStage);
             settingsForm.showAndWait();
+            agent = null;
         });
 
         Button addButton = new Button("Добавить документ");
@@ -54,9 +61,49 @@ public class AgendocApp extends Application
         TextArea textArea = new TextArea();
         textArea.setPromptText("Enter multi-line text here...");
         textArea.setPrefRowCount(10);
+        textArea.setEditable(false);
 
         TextField textField = new TextField();
         textField.setPromptText("Enter text here...");
+        textField.setOnAction(e ->
+        {
+            String input = textField.getText();
+            if (input != null && !input.isBlank())
+            {
+                textArea.appendText("You: " + input + "\n");
+                textField.clear();
+                textField.setDisable(true);
+
+                if (agent == null)
+                {
+                    agent = new Agent(settingsStorage);
+                }
+
+                Agent currentAgent = agent;
+                new Thread(() ->
+                {
+                    try
+                    {
+                        String response = currentAgent.agent().chat(input);
+                        Platform.runLater(() ->
+                        {
+                            textArea.appendText("Agent: " + response + "\n");
+                            textField.setDisable(false);
+                            textField.requestFocus();
+                        });
+                    }
+                    catch (Exception ex)
+                    {
+                        Platform.runLater(() ->
+                        {
+                            textArea.appendText("Error: " + ex.getMessage() + "\n");
+                            textField.setDisable(false);
+                            textField.requestFocus();
+                        });
+                    }
+                }).start();
+            }
+        });
 
         listView = new ListView<>();
         listView.setCellFactory(lv -> new ListCell<>()

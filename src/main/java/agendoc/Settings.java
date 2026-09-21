@@ -144,9 +144,9 @@ public class Settings
     }
 
     /**
-     * Returns the timeout in milliseconds.
+     * Returns the timeout in seconds.
      *
-     * @return timeout in milliseconds
+     * @return timeout in seconds
      */
     public int getTimeoutSec()
     {
@@ -154,7 +154,7 @@ public class Settings
     }
 
     /**
-     * Sets the timeout in milliseconds.
+     * Sets the timeout in seconds.
      *
      * @param timeout timeout in milliseconds
      */
