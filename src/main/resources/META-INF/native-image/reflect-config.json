@@ -2,5 +2,9 @@
   {
     "name": "agendoc.Agent$ProjectAgent",
     "queryAllPublicMethods": true
+  },
+  {
+    "name": "com.fasterxml.jackson.databind.PropertyNamingStrategies$SnakeCaseStrategy",
+    "allPublicConstructors": true
   }
 ]
