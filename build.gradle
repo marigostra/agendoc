@@ -18,6 +18,9 @@ java
 tasks.withType(JavaCompile).configureEach
 {
     options.encoding = 'UTF-8'
+    options.compilerArgs.addAll([
+        '--add-reads', 'agendoc=ALL-UNNAMED'
+    ])
 }
 
 repositories
@@ -33,6 +36,10 @@ javafx
 
 dependencies
 {
+    implementation 'dev.langchain4j:langchain4j:1.9.1'
+    implementation 'dev.langchain4j:langchain4j-agentic:1.9.1-beta17'
+    implementation 'dev.langchain4j:langchain4j-open-ai:1.9.1'
+    implementation 'dev.langchain4j:langchain4j-http-client-jdk:1.9.1'
     implementation 'org.apache.poi:poi:5.4.0'
     implementation 'org.apache.poi:poi-ooxml:5.4.0'
 
@@ -48,6 +55,9 @@ application
 {
     mainClass = 'agendoc.AgendocApp'
     mainModule = 'agendoc'
+    applicationDefaultJvmArgs = [
+        '--add-reads', 'agendoc=ALL-UNNAMED'
+    ]
 }
 
 gluonfx {
