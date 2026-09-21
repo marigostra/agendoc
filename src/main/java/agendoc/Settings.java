@@ -6,11 +6,46 @@ package agendoc;
 public class Settings
 {
 
+    /**
+     * Default API endpoint URL.
+     */
+    public static final String DEFAULT_ENDPOINT = "https://openai.bothub.chat/v1";
+
+    /**
+     * Default access token. Empty by default.
+     */
+    public static final String DEFAULT_TOKEN = "";
+
+    /**
+     * Default model name.
+     */
+    public static final String DEFAULT_MODEL = "gpt-5.6-luna";
+
+    /**
+     * Default project name. Empty by default.
+     */
+    public static final String DEFAULT_PROJECT = "";
+
+    /**
+     * Default timeout in seconds.
+     */
+    public static final int DEFAULT_TIMEOUT_SEC = 300;
+
+    /**
+     * Default tool call limit.
+     */
+    public static final int DEFAULT_TOOL_CALL_LIMIT = 100;
+
+    /**
+     * Default temperature value.
+     */
+    public static final double DEFAULT_TEMPERATURE = 0.7;
+
     private String endpoint;
     private String token;
     private String model;
     private String project;
-    private int timeout;
+    private int timeoutSec;
     private int toolCallLimit;
     private double temperature;
 
@@ -19,13 +54,13 @@ public class Settings
      */
     public Settings()
     {
-        this.endpoint = "https://api.openai.com/v1";
-        this.token = "";
-        this.model = "gpt-4";
-        this.project = "";
-        this.timeout = 30000;
-        this.toolCallLimit = 10;
-        this.temperature = 0.7;
+        this.endpoint = DEFAULT_ENDPOINT;
+        this.token = DEFAULT_TOKEN;
+        this.model = DEFAULT_MODEL;
+        this.project = DEFAULT_PROJECT;
+        this.timeoutSec = DEFAULT_TIMEOUT_SEC;
+        this.toolCallLimit = DEFAULT_TOOL_CALL_LIMIT;
+        this.temperature = DEFAULT_TEMPERATURE;
     }
 
     /**
@@ -113,9 +148,9 @@ public class Settings
      *
      * @return timeout in milliseconds
      */
-    public int getTimeout()
+    public int getTimeoutSec()
     {
-        return timeout;
+        return timeoutSec;
     }
 
     /**
@@ -123,9 +158,9 @@ public class Settings
      *
      * @param timeout timeout in milliseconds
      */
-    public void setTimeout(int timeout)
+    public void setTimeoutSec(int timeoutSec)
     {
-        this.timeout = timeout;
+        this.timeoutSec = timeoutSec;
     }
 
     /**

@@ -33,13 +33,13 @@ class SettingsStorageTest
         Settings settings = storage.load();
 
         assertNotNull(settings);
-        assertEquals("https://api.openai.com/v1", settings.getEndpoint());
-        assertEquals("", settings.getToken());
-        assertEquals("gpt-4", settings.getModel());
-        assertEquals("", settings.getProject());
-        assertEquals(30000, settings.getTimeout());
-        assertEquals(10, settings.getToolCallLimit());
-        assertEquals(0.7, settings.getTemperature(), 0.001);
+        assertEquals(Settings.DEFAULT_ENDPOINT, settings.getEndpoint());
+        assertEquals(Settings.DEFAULT_TOKEN, settings.getToken());
+        assertEquals(Settings.DEFAULT_MODEL, settings.getModel());
+        assertEquals(Settings.DEFAULT_PROJECT, settings.getProject());
+        assertEquals(Settings.DEFAULT_TIMEOUT_SEC, settings.getTimeoutSec());
+        assertEquals(Settings.DEFAULT_TOOL_CALL_LIMIT, settings.getToolCallLimit());
+        assertEquals(Settings.DEFAULT_TEMPERATURE, settings.getTemperature(), 0.001);
     }
 
     @Test
@@ -50,7 +50,7 @@ class SettingsStorageTest
         original.setToken("sk-test-token-123");
         original.setModel("gpt-3.5-turbo");
         original.setProject("my-test-project");
-        original.setTimeout(60000);
+        original.setTimeoutSec(60000);
         original.setToolCallLimit(5);
         original.setTemperature(0.3);
 
@@ -62,7 +62,7 @@ class SettingsStorageTest
         assertEquals("sk-test-token-123", loaded.getToken());
         assertEquals("gpt-3.5-turbo", loaded.getModel());
         assertEquals("my-test-project", loaded.getProject());
-        assertEquals(60000, loaded.getTimeout());
+        assertEquals(60000, loaded.getTimeoutSec());
         assertEquals(5, loaded.getToolCallLimit());
         assertEquals(0.3, loaded.getTemperature(), 0.001);
     }
@@ -76,7 +76,7 @@ class SettingsStorageTest
         Settings settings = storage.load();
 
         assertNotNull(settings);
-        assertEquals("https://api.openai.com/v1", settings.getEndpoint());
+        assertEquals(Settings.DEFAULT_ENDPOINT, settings.getEndpoint());
     }
 
     @Test
@@ -88,7 +88,7 @@ class SettingsStorageTest
         Settings settings = storage.load();
 
         assertNotNull(settings);
-        assertEquals("https://api.openai.com/v1", settings.getEndpoint());
+        assertEquals(Settings.DEFAULT_ENDPOINT, settings.getEndpoint());
     }
 
     @Test
@@ -101,7 +101,7 @@ class SettingsStorageTest
 
         assertNotNull(settings);
         assertEquals("https://test.com", settings.getEndpoint());
-        assertEquals(30000, settings.getTimeout());
+        assertEquals(Settings.DEFAULT_TIMEOUT_SEC, settings.getTimeoutSec());
     }
 
     @Test
@@ -149,8 +149,8 @@ class SettingsStorageTest
         assertEquals("https://partial.com", settings.getEndpoint());
         assertEquals("custom-model", settings.getModel());
         // Fields not present in properties should retain default values
-        assertEquals(30000, settings.getTimeout());
-        assertEquals(0.7, settings.getTemperature(), 0.001);
+        assertEquals(Settings.DEFAULT_TIMEOUT_SEC, settings.getTimeoutSec());
+        assertEquals(Settings.DEFAULT_TEMPERATURE, settings.getTemperature(), 0.001);
     }
 
     @Test

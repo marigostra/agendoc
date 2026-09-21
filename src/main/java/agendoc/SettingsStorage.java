@@ -125,7 +125,7 @@ public class SettingsStorage
         {
             try
             {
-                settings.setTimeout(Integer.parseInt(props.getProperty(KEY_TIMEOUT)));
+                settings.setTimeoutSec(Integer.parseInt(props.getProperty(KEY_TIMEOUT)));
             }
             catch (NumberFormatException e)
             {
@@ -170,7 +170,7 @@ public class SettingsStorage
         props.setProperty(KEY_TOKEN, settings.getToken());
         props.setProperty(KEY_MODEL, settings.getModel());
         props.setProperty(KEY_PROJECT, settings.getProject());
-        props.setProperty(KEY_TIMEOUT, String.valueOf(settings.getTimeout()));
+        props.setProperty(KEY_TIMEOUT, String.valueOf(settings.getTimeoutSec()));
         props.setProperty(KEY_TOOL_CALL_LIMIT, String.valueOf(settings.getToolCallLimit()));
         props.setProperty(KEY_TEMPERATURE, String.valueOf(settings.getTemperature()));
         return props;

@@ -30,7 +30,7 @@ public final class LlmFactory
             .baseUrl(settings.getEndpoint())
             .apiKey(settings.getToken())
             .modelName(settings.getModel())
-            .timeout(Duration.ofMillis(settings.getTimeout()))
+            .timeout(Duration.ofSeconds(settings.getTimeoutSec()))
             .temperature(settings.getTemperature())
             .httpClientBuilder(
                 JdkHttpClient.builder()

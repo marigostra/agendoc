@@ -5,7 +5,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
-import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
@@ -51,7 +50,7 @@ public class SettingsForm extends Stage
 
         Label endpointLabel = new Label("Адрес для подключения:");
         endpointField = new TextField();
-        endpointField.setPromptText("https://api.openai.com/v1");
+        endpointField.setPromptText(Settings.DEFAULT_ENDPOINT);
         grid.add(endpointLabel, 0, 0);
         grid.add(endpointField, 1, 0);
 
@@ -63,31 +62,31 @@ public class SettingsForm extends Stage
 
         Label modelLabel = new Label("Название модели:");
         modelField = new TextField();
-        modelField.setPromptText("gpt-4");
+        modelField.setPromptText(Settings.DEFAULT_MODEL);
         grid.add(modelLabel, 0, 2);
         grid.add(modelField, 1, 2);
 
         Label projectLabel = new Label("Проект:");
         projectField = new TextField();
-        projectField.setPromptText("my-project");
+        projectField.setPromptText(Settings.DEFAULT_PROJECT);
         grid.add(projectLabel, 0, 3);
         grid.add(projectField, 1, 3);
 
-        Label timeoutLabel = new Label("Таймаут (мс):");
+        Label timeoutLabel = new Label("Таймаут (сек):");
         timeoutField = new TextField();
-        timeoutField.setPromptText("30000");
+        timeoutField.setPromptText(String.valueOf(Settings.DEFAULT_TIMEOUT_SEC));
         grid.add(timeoutLabel, 0, 4);
         grid.add(timeoutField, 1, 4);
 
         Label toolCallLimitLabel = new Label("Лимит вызовов инструментов:");
         toolCallLimitField = new TextField();
-        toolCallLimitField.setPromptText("10");
+        toolCallLimitField.setPromptText(String.valueOf(Settings.DEFAULT_TOOL_CALL_LIMIT));
         grid.add(toolCallLimitLabel, 0, 5);
         grid.add(toolCallLimitField, 1, 5);
 
         Label temperatureLabel = new Label("Температура:");
         temperatureField = new TextField();
-        temperatureField.setPromptText("0.7");
+        temperatureField.setPromptText(String.valueOf(Settings.DEFAULT_TEMPERATURE));
         grid.add(temperatureLabel, 0, 6);
         grid.add(temperatureField, 1, 6);
 
@@ -122,7 +121,7 @@ public class SettingsForm extends Stage
         tokenField.setText(settings.getToken());
         modelField.setText(settings.getModel());
         projectField.setText(settings.getProject());
-        timeoutField.setText(String.valueOf(settings.getTimeout()));
+        timeoutField.setText(String.valueOf(settings.getTimeoutSec()));
         toolCallLimitField.setText(String.valueOf(settings.getToolCallLimit()));
         temperatureField.setText(String.valueOf(settings.getTemperature()));
     }
@@ -140,11 +139,11 @@ public class SettingsForm extends Stage
 
         try
         {
-            settings.setTimeout(Integer.parseInt(timeoutField.getText()));
+            settings.setTimeoutSec(Integer.parseInt(timeoutField.getText()));
         }
         catch (NumberFormatException e)
         {
-            settings.setTimeout(30000);
+            settings.setTimeoutSec(Settings.DEFAULT_TIMEOUT_SEC);
         }
 
         try
@@ -153,7 +152,7 @@ public class SettingsForm extends Stage
         }
         catch (NumberFormatException e)
         {
-            settings.setToolCallLimit(10);
+            settings.setToolCallLimit(Settings.DEFAULT_TOOL_CALL_LIMIT);
         }
 
         try
@@ -162,7 +161,7 @@ public class SettingsForm extends Stage
         }
         catch (NumberFormatException e)
         {
-            settings.setTemperature(0.7);
+            settings.setTemperature(Settings.DEFAULT_TEMPERATURE);
         }
 
         try
