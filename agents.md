@@ -48,8 +48,55 @@ agendoc/
         └── java/
             ├── module-info.java   # JPMS module descriptor
             └── agendoc/
-                └── AgendocApp.java    # Main application entry point
+                ├── AgendocApp.java    # Main application entry point
+                └── docs/              # Office document to Markdown converters
 ```
+
+## Document Exchange Format
+
+Agendoc exchanges document content with the LLM as **Markdown**. The document type is identified only by the file name extension (`*.docx` or `*.xlsx`); the model receives the file name together with its content, so no separate type marker is required inside the Markdown body.
+
+### DOCX
+
+A DOCX document is converted to the following Markdown subset:
+
+- Headings: one to six leading `#` characters.
+- Regular paragraphs.
+- Inline formatting: `**bold**`, `*italic*`, and `***bold italic***`.
+- Simple tables without merged cells. The first table row is treated as the header row.
+
+The converters handle only basic formatting. Styling, images, footnotes, headers, footers, and complex layouts are intentionally ignored: the goal is to transfer the actual data, and the user can apply visual polish afterward.
+
+### XLSX
+
+An XLSX workbook is converted to a sequence of Markdown sections:
+
+- Each worksheet starts with a top-level heading: `# SheetName`.
+- The used rectangular range of the sheet follows as a Markdown table.
+- The first row of the used range is treated as the header row.
+- Cell values are exported as their evaluated values. Formulas are converted to values, and the formula definition itself is lost.
+- Empty cells are preserved as empty table cells so that the rectangular layout is not lost.
+
+When writing Markdown back to XLSX, the heading becomes the worksheet name, and the tables are written as worksheet rows.
+
+### Table Cell Escaping
+
+Inside table cells the following escape sequences are used:
+
+- `\\` — backslash.
+- `\|` — pipe character.
+- `\n` — newline.
+
+Carriage return characters are removed during conversion.
+
+### Cell Type Inference on Write
+
+When writing XLSX, cell values are inferred from the text:
+
+- `true` and `false` (case-insensitive) become boolean cells.
+- Integer and floating-point values become numeric cells, unless the value starts with a leading zero and contains only digits, in which case it is kept as text.
+- Empty values leave the cell blank.
+- All other values are written as text cells.
 
 ## Core Features
 

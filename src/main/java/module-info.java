@@ -5,4 +5,5 @@ module agendoc
     requires org.apache.poi.ooxml;
     requires java.net.http;
     exports agendoc;
+    exports agendoc.docs;
 }
