@@ -10,8 +10,8 @@ import dev.langchain4j.agent.tool.Tool;
  * Tool implementations exposed to the language model for working with the
  * documents attached to the workspace.
  *
- * <p>Each tool operates on the set of documents supplied at construction time.
- * Documents are identified by their file name (with extension).</p>
+ * <p>Each tool operates on the live set of documents supplied at construction
+ * time. Documents are identified by their file name (with extension).</p>
  */
 final class AgentTools
 {
@@ -21,11 +21,11 @@ final class AgentTools
     /**
      * Creates the tool set backed by the given documents.
      *
-     * @param documents the documents available to the agent
+     * @param documents the live list of documents available to the agent
      */
     AgentTools(List<DocumentRef> documents)
     {
-        this.documents = List.copyOf(documents);
+        this.documents = documents;
     }
 
     /**
@@ -36,7 +36,7 @@ final class AgentTools
     @Tool("Provides the list of known document. Each document is listed as it's file name.")
     public List<String> listDocuments()
     {
-        return documents.stream()
+        return snapshot().stream()
             .map(DocumentRef::toString)
             .toList();
     }
@@ -91,9 +91,22 @@ final class AgentTools
         }
     }
 
+    /**
+     * Returns a thread-safe snapshot of the current documents.
+     *
+     * @return an immutable copy of the current document list
+     */
+    private List<DocumentRef> snapshot()
+    {
+        synchronized (documents)
+        {
+            return List.copyOf(documents);
+        }
+    }
+
     private DocumentRef findDocument(String documentName)
     {
-        for (DocumentRef ref : documents)
+        for (DocumentRef ref : snapshot())
         {
             if (ref.toString().equals(documentName))
                 return ref;

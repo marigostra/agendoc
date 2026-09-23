@@ -187,7 +187,10 @@ public class AgendocApp extends Application
         if (selectedFile != null)
         {
             DocumentRef docRef = new DocumentRef(selectedFile.toPath().toAbsolutePath());
-            listView.getItems().add(docRef);
+            synchronized (listView.getItems())
+            {
+                listView.getItems().add(docRef);
+            }
         }
     }
 
@@ -199,7 +202,10 @@ public class AgendocApp extends Application
         int selectedIndex = listView.getSelectionModel().getSelectedIndex();
         if (selectedIndex >= 0)
         {
-            listView.getItems().remove(selectedIndex);
+            synchronized (listView.getItems())
+            {
+                listView.getItems().remove(selectedIndex);
+            }
         }
     }
 
