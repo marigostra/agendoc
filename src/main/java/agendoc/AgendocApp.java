@@ -76,7 +76,7 @@ public class AgendocApp extends Application
 
                 if (agent == null)
                 {
-                    agent = new Agent(settingsStorage);
+                    agent = new Agent(settingsStorage, new AgentTools());
                 }
 
                 Agent currentAgent = agent;

@@ -34,14 +34,16 @@ public final class Agent
     /**
      * Creates an Agent configured from the given settings storage.
      *
-     * @param settingsStorage the settings storage to load configuration from
+     * @param settingsStorage The settings storage to load configuration from
+     * @param tools The tools object to be provided to the newly created LLM
      */
-    Agent(SettingsStorage settingsStorage)
+    Agent(SettingsStorage settingsStorage, AgentTools tools)
     {
         chatMemory = MessageWindowChatMemory.withMaxMessages(1000);
         agent = AiServices.builder(ProjectAgent.class)
             .chatModel(LlmFactory.createModel(settingsStorage))
             .chatMemory(chatMemory)
+	.tools(tools)
             .build();
     }
 
