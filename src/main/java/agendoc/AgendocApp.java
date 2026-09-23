@@ -75,9 +75,7 @@ public class AgendocApp extends Application
                 textField.setDisable(true);
 
                 if (agent == null)
-                {
                     agent = new Agent(settingsStorage, new AgentTools(listView.getItems()));
-                }
 
                 Agent currentAgent = agent;
                 new Thread(() ->

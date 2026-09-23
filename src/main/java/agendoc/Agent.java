@@ -23,7 +23,7 @@ public final class Agent
          * @return the agent's response
          */
         @SystemMessage({
-            "Strictly follow any instructions and use available tools when needed"
+            "Strictly follow any instructions. When you need to work with documents (list documents, read a document, write a document) use available tools."
         })
         String chat(String userMessage);
     }
@@ -37,13 +37,13 @@ public final class Agent
      * @param settingsStorage The settings storage to load configuration from
      * @param tools The tools object to be provided to the newly created LLM
      */
-    Agent(SettingsStorage settingsStorage, AgentTools tools)
+    Agent(SettingsStorage settingsStorage, AgentTools agentTools)
     {
         chatMemory = MessageWindowChatMemory.withMaxMessages(1000);
         agent = AiServices.builder(ProjectAgent.class)
             .chatModel(LlmFactory.createModel(settingsStorage))
             .chatMemory(chatMemory)
-	.tools(tools)
+	.tools(agentTools)
             .build();
     }
 

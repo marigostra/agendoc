@@ -13,7 +13,7 @@ import dev.langchain4j.agent.tool.Tool;
  * <p>Each tool operates on the live set of documents supplied at construction
  * time. Documents are identified by their file name (with extension).</p>
  */
-final class AgentTools
+public final class AgentTools
 {
 
     private final List<DocumentRef> documents;
@@ -33,7 +33,7 @@ final class AgentTools
      *
      * @return the file names of all known documents
      */
-    @Tool("Provides the list of known document. Each document is listed as it's file name.")
+    @Tool("Provides the list of known document. Each document is listed as its file name.")
     public List<String> listDocuments()
     {
         return snapshot().stream()
