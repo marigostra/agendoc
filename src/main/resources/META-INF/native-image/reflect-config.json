@@ -4,6 +4,11 @@
     "queryAllPublicMethods": true
   },
   {
+    "name": "agendoc.AgentTools",
+    "queryAllPublicMethods": true,
+    "allPublicConstructors": true
+  },
+  {
     "name": "com.fasterxml.jackson.databind.PropertyNamingStrategies$SnakeCaseStrategy",
     "allPublicConstructors": true
   }
