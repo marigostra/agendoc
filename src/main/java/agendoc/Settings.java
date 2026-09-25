@@ -19,7 +19,7 @@ public class Settings
     /**
      * Default model name.
      */
-    public static final String DEFAULT_MODEL = "deepsekk-v4.1-flash";
+    public static final String DEFAULT_MODEL = "deepseek-v4.1-flash";
 
     /**
      * Default project name. Empty by default.
