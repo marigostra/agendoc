@@ -19,7 +19,7 @@ tasks.withType(JavaCompile).configureEach
 {
     options.encoding = 'UTF-8'
     options.compilerArgs.addAll([
-        '--add-reads', 'agendoc=ALL-UNNAMED'
+        /* '--add-reads', 'agendoc=ALL-UNNAMED' */
     ])
 }
 
@@ -54,9 +54,9 @@ test
 application
 {
     mainClass = 'agendoc.AgendocApp'
-    mainModule = 'agendoc'
+    /* mainModule = 'agendoc' */
     applicationDefaultJvmArgs = [
-        '--add-reads', 'agendoc=ALL-UNNAMED'
+        /* '--add-reads', 'agendoc=ALL-UNNAMED' */
     ]
 }
 
