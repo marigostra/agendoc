@@ -156,7 +156,7 @@ public class Settings
     /**
      * Sets the timeout in seconds.
      *
-     * @param timeout timeout in milliseconds
+     * @param timeout timeout in seconds
      */
     public void setTimeoutSec(int timeoutSec)
     {

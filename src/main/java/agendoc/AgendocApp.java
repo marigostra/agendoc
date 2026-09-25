@@ -28,6 +28,7 @@ public class AgendocApp extends Application
 {
 
     private ListView<DocumentRef> listView;
+    private TextArea textArea;
     private Button deleteButton;
     private MenuItem deleteMenuItem;
 
@@ -58,7 +59,7 @@ public class AgendocApp extends Application
 
         HBox buttonBox = new HBox(10, llmButton, addButton, deleteButton);
 
-        TextArea textArea = new TextArea();
+        textArea = new TextArea();
         textArea.setPromptText("Enter multi-line text here...");
         textArea.setPrefRowCount(10);
         textArea.setEditable(false);
@@ -75,7 +76,7 @@ public class AgendocApp extends Application
                 textField.setDisable(true);
 
                 if (agent == null)
-                    agent = new Agent(settingsStorage, new AgentTools(listView.getItems()));
+                    agent = new Agent(settingsStorage, new AgentTools(listView.getItems(), this::trace));
 
                 Agent currentAgent = agent;
                 new Thread(() ->
@@ -165,6 +166,16 @@ public class AgendocApp extends Application
         Scene scene = new Scene(grid, 600, 400);
         primaryStage.setScene(scene);
         primaryStage.show();
+    }
+
+    /**
+     * Appends a trace line to the chat area on the JavaFX application thread.
+     *
+     * @param line the trace line to append
+     */
+    private void trace(String line)
+    {
+        Platform.runLater(() -> textArea.appendText(line + "\n"));
     }
 
     /**
