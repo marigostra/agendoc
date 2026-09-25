@@ -68,17 +68,28 @@ gluonfx {
     ]
 }
 
-test {
+test
+{
     afterTest { descriptor, result ->
-        if (result.resultType == TestResult.ResultType.FAILURE) {
+        if (result.resultType == TestResult.ResultType.FAILURE)
+        {
             String testName = descriptor.displayName ?: "${descriptor.className}.${descriptor.name}"
             logger.error("FAILED TEST: ${testName}")
 
             Throwable exception = result.exception
-            if (exception != null) {
-                StringWriter stackTrace = new StringWriter()
-                exception.printStackTrace(new PrintWriter(stackTrace))
-                logger.error(stackTrace.toString())
+            if (exception != null)
+            {
+                logger.error("${exception.class.simpleName}: ${exception.message}")
+
+                StackTraceElement testFrame = exception.stackTrace.find
+                {
+                    it.className?.startsWith('agendoc')
+                }
+
+                if (testFrame != null)
+                {
+                    logger.error("  at ${testFrame}")
+                }
             }
         }
     }
