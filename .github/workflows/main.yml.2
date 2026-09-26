@@ -36,7 +36,7 @@ jobs:
             libxtst-dev \
             zlib1g-dev
 
-      - name: Set up Gluon GraalVM for Java 17 on Linux
+      - name: Set up Gluon GraalVM for Java 17
         run: |
           GRAALVM_VERSION="17.0.12"
           GRAALVM_ARCHIVE="graalvm-java17-linux-amd64-${GRAALVM_VERSION}.tar.gz"
@@ -120,48 +120,13 @@ jobs:
         with:
           arch: x64
 
-      - name: Set up Gluon GraalVM for Java 17 on Windows
-        shell: pwsh
-        run: |
-          $graalvmVersion = "17.0.12"
-          $archiveName = "graalvm-java17-windows-amd64-${graalvmVersion}.zip"
-          $downloadUrl = "https://github.com/gluonhq/graal/releases/download/gluon-${graalvmVersion}/${archiveName}"
-
-          $installRoot = "C:\gluon-graalvm"
-          $archivePath = Join-Path $installRoot $archiveName
-
-          New-Item -ItemType Directory -Force -Path $installRoot | Out-Null
-
-          Invoke-WebRequest `
-            -Uri $downloadUrl `
-            -OutFile $archivePath `
-            -UseBasicParsing
-
-          Expand-Archive `
-            -Path $archivePath `
-            -DestinationPath $installRoot `
-            -Force
-
-          $graalvmHome = Get-ChildItem `
-            -Path $installRoot `
-            -Directory `
-            -Filter "graalvm-*" |
-            Select-Object -First 1
-
-          if ($null -eq $graalvmHome) {
-            Write-Error "Gluon GraalVM directory was not found."
-            exit 1
-          }
-
-          $graalvmHomePath = $graalvmHome.FullName
-          $graalvmBinPath = Join-Path $graalvmHomePath "bin"
-
-          "GRAALVM_HOME=$graalvmHomePath" >> $env:GITHUB_ENV
-          "JAVA_HOME=$graalvmHomePath" >> $env:GITHUB_ENV
-          $graalvmBinPath >> $env:GITHUB_PATH
-
-          & (Join-Path $graalvmBinPath "java.exe") -version
-          & (Join-Path $graalvmBinPath "native-image.cmd") --version
+      - name: Set up GraalVM for Java 17
+        uses: graalvm/setup-graalvm@v1
+        with:
+          java-version: "17"
+          distribution: "graalvm"
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          native-image-job-reports: "false"
 
       - name: Set up Gradle
         uses: gradle/actions/setup-gradle@v4
