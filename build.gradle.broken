@@ -9,6 +9,22 @@ plugins
 group = 'agendoc'
 version = '1.0-SNAPSHOT'
 
+dependencies
+{
+    implementation 'dev.langchain4j:langchain4j:1.9.1'
+    implementation 'dev.langchain4j:langchain4j-agentic:1.9.1-beta17'
+    implementation 'dev.langchain4j:langchain4j-open-ai:1.9.1'
+    implementation 'dev.langchain4j:langchain4j-http-client-jdk:1.9.1'
+    implementation 'org.apache.poi:poi:5.4.0'
+    implementation 'org.apache.poi:poi-ooxml:5.4.0'
+    implementation 'org.apache.logging.log4j:log4j-core:2.24.3'
+    implementation 'org.apache.logging.log4j:log4j-slf4j2-impl:2.24.3'
+    /* testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1' */
+    testImplementation "org.junit.jupiter:junit-jupiter-api:6.0.3"
+    testImplementation "org.junit.jupiter:junit-jupiter-engine:6..0.3"
+    testImplementation "org.junit.platform:junit-platform-launcher:6..0.3"
+}
+
 java
 {
     sourceCompatibility = JavaVersion.VERSION_21
@@ -18,9 +34,6 @@ java
 tasks.withType(JavaCompile).configureEach
 {
     options.encoding = 'UTF-8'
-    options.compilerArgs.addAll([
-        /* '--add-reads', 'agendoc=ALL-UNNAMED' */
-    ])
 }
 
 repositories
@@ -34,27 +47,14 @@ javafx
     modules = ['javafx.controls']
 }
 
-dependencies
-{
-    implementation 'dev.langchain4j:langchain4j:1.9.1'
-    implementation 'dev.langchain4j:langchain4j-agentic:1.9.1-beta17'
-    implementation 'dev.langchain4j:langchain4j-open-ai:1.9.1'
-    implementation 'dev.langchain4j:langchain4j-http-client-jdk:1.9.1'
-    implementation 'org.apache.poi:poi:5.4.0'
-    implementation 'org.apache.poi:poi-ooxml:5.4.0'
-
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.1'
-        testImplementation "org.junit.platform:junit-platform-launcher:5.10.0.1"
-}
-
 test
 {
     useJUnitPlatform()
 }
 
-application
+    application
 {
-    mainClass = 'agendoc.ConsoleApp'
+    mainClass = 'agendoc.AgendocApp'
     /* mainModule = 'agendoc' */
     applicationDefaultJvmArgs = [
         /* '--add-reads', 'agendoc=ALL-UNNAMED' */
@@ -63,9 +63,9 @@ application
 
 gluonfx {
     target = 'host'
-
     reflectionList = [
         'agendoc.AgendocApp',
+        'agendoc.AgentTools',
     ]
 }
 

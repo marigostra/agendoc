@@ -2,3 +2,4 @@ build
 .gradle
 agendoc-linux-x64
 agendoc-windows-x64
+graalvm
