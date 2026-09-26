@@ -9,7 +9,6 @@ Agendoc is an intelligent agent application for working with a suite of office d
 - **Language:** Java 17
 - **UI Framework:** JavaFX 21
 - **Build System:** Gradle
-- **Module System:** Java Platform Module System (JPMS)
 - **Distribution Format:** Native image (GraalVM native-image)
 
 ## Distribution: Native Image
@@ -46,7 +45,6 @@ agendoc/
 └── src/
     └── main/
         └── java/
-            ├── module-info.java   # JPMS module descriptor
             └── agendoc/
                 ├── AgendocApp.java    # Main application entry point
                 └── docs/              # Office document to Markdown converters
@@ -122,7 +120,6 @@ When writing XLSX, cell values are inferred from the text:
 ### Architecture Principles
 
 - Keep the UI layer (JavaFX) separate from business logic and data access layers.
-- Use the Java module system properly; declare all required modules in `module-info.java`.
 - Prefer composition over inheritance.
 - Write clean, maintainable code with single-responsibility classes.
 

@@ -1,4 +1,3 @@
-
 plugins
 {
     id 'java'
@@ -27,15 +26,11 @@ java
 {
     sourceCompatibility = JavaVersion.VERSION_17
     targetCompatibility = JavaVersion.VERSION_17
-    modularity.inferModulePath = true
 }
 
 tasks.withType(JavaCompile).configureEach
 {
     options.encoding = 'UTF-8'
-    options.compilerArgs.addAll([
-        '--add-reads', 'agendoc=ALL-UNNAMED'
-    ])
 }
 
 repositories
@@ -49,7 +44,6 @@ javafx
     modules = ['javafx.controls']
 }
 
-
 test
 {
     useJUnitPlatform()
@@ -57,11 +51,7 @@ test
 
 application
 {
-    mainClass = 'agendoc.AgendocApp'
-    mainModule = 'agendoc'
-    applicationDefaultJvmArgs = [
-        '--add-reads', 'agendoc=ALL-UNNAMED'
-    ]
+    mainClass = 'agendoc.ConsoleApp'
 }
 
 gluonfx {
