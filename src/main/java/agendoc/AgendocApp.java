@@ -225,8 +225,6 @@ public class AgendocApp extends Application
      */
     public static void main(String[] args)
     {
-	if (args.length == 1 && args[0].equalsIgnoreCase("--console"))
-	    new ConsoleChat().run();
         launch(args);
     }
 }
