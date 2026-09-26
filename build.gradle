@@ -57,10 +57,8 @@ test
 
 application
 {
-    mainClass = 'agendoc.ConsoleApp'
-    /* mainModule = 'agendoc' */
+    mainClass = 'agendoc.AgendocApp'
     applicationDefaultJvmArgs = [
-        /* '--add-reads', 'agendoc=ALL-UNNAMED' */
     ]
 }
 

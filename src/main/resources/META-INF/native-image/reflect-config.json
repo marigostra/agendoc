@@ -11,6 +11,14 @@
       {
         "name": "listDocuments",
         "parameterTypes": []
+      },
+      {
+        "name": "readDocument",
+        "parameterTypes": ["java.lang.String"]
+      },
+      {
+        "name": "saveDocument",
+        "parameterTypes": ["java.lang.String", "java.lang.String"]
       }
     ]
   },

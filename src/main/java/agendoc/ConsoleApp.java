@@ -4,15 +4,12 @@ package agendoc;
 import java.util.*;
 import java.io.*;
 import java.nio.file.*;
-import org.apache.logging.log4j.*;
 
 import static java.util.Objects.*;
 import static java.nio.file.Files.*;
 
 final class ConsoleApp
 {
-    static private final Logger log = LogManager.getLogger();
-    
     void run()
     {
 	final var tools = new AgentTools(Collections.emptyList(), s -> System.out.println(s));
