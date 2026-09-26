@@ -6,7 +6,13 @@
   {
     "name": "agendoc.AgentTools",
     "queryAllPublicMethods": true,
-    "allPublicConstructors": true
+    "allPublicConstructors": true,
+    "methods": [
+      {
+        "name": "listDocuments",
+        "parameterTypes": []
+      }
+    ]
   },
   {
     "name": "com.fasterxml.jackson.databind.PropertyNamingStrategies$SnakeCaseStrategy",

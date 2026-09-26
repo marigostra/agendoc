@@ -15,7 +15,7 @@ final class ConsoleApp
     
     void run()
     {
-	final var tools = new AgentTools(Collections.emptyList(), s -> log.info(s));
+	final var tools = new AgentTools(Collections.emptyList(), s -> System.out.println(s));
 	final var agent = new Agent(new SettingsStorage(), tools);
         try (Scanner scanner = new Scanner(System.in)) {
 	    String userInput;
